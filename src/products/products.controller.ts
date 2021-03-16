@@ -15,6 +15,7 @@ import { ApiBody } from '@nestjs/swagger';
 
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/createProduct.dto';
+import { ParsePaginationPipe } from '../util/pagination.pipe'
 
 @Controller('products')
 export class ProductsController {
@@ -34,56 +35,35 @@ export class ProductsController {
         @Body() product:CreateProductDto
     ){
         return product
-    }
+    }   
 
-    @ApiBody({
-        type: CreateProductDto,
-        required: true,
-        description: `updated product data`
-    })
-    @Put('/:id')
+    
+    @Get('/:page/:size')
     @HttpCode(HttpStatus.OK)
-    async update(
-        @Param('id', ParseIntPipe) id:number,
-        @Body() product:CreateProductDto
-    ){
-        return {
-            id, 
-            ...product
-        }
-    }
-
-    @Get('/:id')
-    @HttpCode(HttpStatus.OK)
-    async findOne (
-        @Param('id', ParseIntPipe) id:number
+    async findAll (
+        @Param('page', ParsePaginationPipe) page:number,
+        @Param('size', ParsePaginationPipe) size:number
     ) {
-        return {
-            id,
-            name: 'bla bla'
+        try {
+            return await this.productService.getAll(page, size)
+        } catch (error) {
+            throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
-    @Get('/')
+    @Get('/search/:productName/:categoryName/:page/:size')
     @HttpCode(HttpStatus.OK)
-    async findAll () {
-        return [
-            {
-                id: 1,
-                name: 'bla'
-            },
-            {
-                id: 2,
-                name: 'bla bla'
-            }
-        ]
+    async search (
+        @Param('page', ParsePaginationPipe) page:number,
+        @Param('size', ParsePaginationPipe) size:number,
+        @Param('productName') productName:string,
+        @Param('categoryName') categoryName:string,
+    ) {
+        try {
+            return await this.productService.filter(productName, categoryName, page, size)
+        } catch (error) {
+            throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)            
+        }
     }
-
-    @Delete('/:id')
-    @HttpCode(HttpStatus.OK)
-    async delete(
-        @Param('id', ParseIntPipe) id:number
-    ){
-        return { id }
-    }
+  
 }

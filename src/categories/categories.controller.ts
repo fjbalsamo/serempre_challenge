@@ -54,12 +54,16 @@ export class CategoriesController {
         }
     }
 
-    @Get('/:id')
+    @Get('/:id/products')
+    @HttpCode(HttpStatus.OK)
     async getOne (
         @Param('id', ParseIntPipe) id:number
     ) {
-        return {
-            id
+        try {
+            return await this.categoryService.findOne(id)
+        } catch (error) {
+            throw new HttpException(`${error.toString()}`, 
+            HttpStatus.INTERNAL_SERVER_ERROR)            
         }
     }
 
