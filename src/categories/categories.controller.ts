@@ -26,7 +26,7 @@ export class CategoriesController {
     @ApiBody({
         type: CreateCategoryDto,
         required: true,
-        description: `create new category`
+        description: `new category data`
     })
     @Post('/')
     @HttpCode(HttpStatus.CREATED)
@@ -40,7 +40,7 @@ export class CategoriesController {
     @ApiBody({
         type: CreateCategoryDto,
         required: true,
-        description: `category to update`
+        description: `updated category data`
     })
     @Put('/:id')
     @HttpCode(HttpStatus.OK)
