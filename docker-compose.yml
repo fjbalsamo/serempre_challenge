@@ -1,0 +1,21 @@
+version: '3.5'
+
+services: 
+  postgres:
+    container_name: 'pg_serempre_cont'
+    image: 'postgres'
+    entrypoint:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      PGDATA: /data/postgres 
+    volumes: 
+      - pgdata:/data/postgres
+    ports: 
+      - "5432:5434"
+    networks: 
+      - postgres
+    restart: always
+networks: 
+  postgres:
+    driver: bridge
+      
