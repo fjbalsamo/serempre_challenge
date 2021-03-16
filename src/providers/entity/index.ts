@@ -105,6 +105,6 @@ export class ProviderEntity {
     homePage?:string
 
     @OneToMany(() => ProductEntity, product => product.provider)
-    products:ProductEntity[]
+    products?:ProductEntity[]
 
 }

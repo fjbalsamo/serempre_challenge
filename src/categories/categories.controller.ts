@@ -11,9 +11,8 @@ import {
     HttpStatus,
     Get,
 } from '@nestjs/common';
-import { ApiBody } from '@nestjs/swagger';
 import { CategoriesService } from './categories.service';
-import { CreateCategoryDto } from './dto/createCategory.dto';
+import { ParsePaginationPipe } from '../util/pagination.pipe'
 
 @Controller('categories')
 export class CategoriesController {
@@ -22,13 +21,15 @@ export class CategoriesController {
         private readonly categoryService:CategoriesService
     ) {}
 
-    @Get('/:id/products')
+    @Get('/:id/products/:page/:size')
     @HttpCode(HttpStatus.OK)
     async getOne (
-        @Param('id', ParseIntPipe) id:number
+        @Param('id', ParseIntPipe) id:number,
+        @Param('page', ParsePaginationPipe) page:number,
+        @Param('size', ParsePaginationPipe) size:number
     ) {
         try {
-            return await this.categoryService.findOneWithProducts(id)
+            return await this.categoryService.findOneWithProducts(id, page, size)
         } catch (error) {
             throw new HttpException(`${error.toString()}`, 
             HttpStatus.INTERNAL_SERVER_ERROR)            

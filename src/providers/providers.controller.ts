@@ -33,7 +33,11 @@ export class ProvidersController {
     async create(
         @Body() provider:CreateProviderDto
     ){
-        return provider
+        try {
+            return await this.providerService.insert(provider)
+        } catch (error) {
+            throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
     }    
 
     @Get('/:id')
@@ -60,10 +64,14 @@ export class ProvidersController {
         }
     }
 
-    // @Delete('/:id')
-    // async delete (
-    //     @Param('id', ParseIntPipe) id:number
-    // ) {
-    //     return { id }
-    // }
+    @Delete('/:id')
+    async delete (
+        @Param('id', ParseIntPipe) id:number
+    ) {
+       try {
+           return await this.providerService.delete(id)
+       } catch (error) {
+           throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
+       }
+    }
 }

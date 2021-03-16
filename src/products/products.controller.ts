@@ -34,7 +34,11 @@ export class ProductsController {
     async create(
         @Body() product:CreateProductDto
     ){
-        return product
+        try {
+            return await this.productService.insert(product)
+        } catch (error) {
+            throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
     }   
 
     

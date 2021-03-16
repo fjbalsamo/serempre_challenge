@@ -12,7 +12,10 @@ export class ProvidersService {
         private readonly providerRepo:Repository<ProviderEntity>
     ){}
 
-    async insert(provider:CreateProviderDto){}
+    async insert(provider:CreateProviderDto):Promise<ProviderEntity[]>{
+        const save = await this.providerRepo.save([provider as ProviderEntity])
+        return save
+    }
 
     async findOne(providerID:number):Promise<ProviderEntity> {
         return await this.providerRepo.findOne(providerID);
