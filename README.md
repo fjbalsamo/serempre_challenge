@@ -24,6 +24,16 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## API documentation
+
+http://localhost:3000/docs
+
 ## Comments
 
-The challenge was emailed to me on March 12th. Today, March 16th, I was able to take a time to do this.
+It was easy, but because of my work today I had time to dedicate myself to the challenge.
+
+I made this api using [nestjs](https://docs.nestjs.com/), docker and postgres database.
+
+I had a difficulty when I wanted to import the csv data, because it had reference errors. So, I removed all the foreign keys in the entities.
+
+I hope this project is successful and exceeds your expectations. 👋
