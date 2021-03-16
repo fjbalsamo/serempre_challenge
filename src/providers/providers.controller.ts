@@ -34,52 +34,36 @@ export class ProvidersController {
         @Body() provider:CreateProviderDto
     ){
         return provider
-    }
-
-    @ApiBody({
-        type: CreateProviderDto,
-        description: 'updated provider data'
-    })
-    @Put('/:id')
-    @HttpCode(HttpStatus.OK)
-    async update(
-        @Param('id', ParseIntPipe) id:number,
-        @Body() provider:CreateProviderDto
-    ){
-        return {
-            id,
-            ...provider
-        }
-    }
+    }    
 
     @Get('/:id')
     @HttpCode(HttpStatus.OK)
     async findOne (
         @Param('id', ParseIntPipe) id:number
     ) {
-        return { id, name: 'the name', othterAttr: 'otros' }
+        try {
+            return this.providerService.findOne(id)
+        } catch (error) {
+            throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
     }
 
-    @Get('/')
+    @Get('/:id/products')
     @HttpCode(HttpStatus.OK)
     async findAll (
-    ) {
-        return [
-            {
-                id: 1,
-                name: 'category 1'
-            },
-            {
-                id: 2,
-                name: 'category 2'
-            }
-        ]
-    }
-
-    @Delete('/:id')
-    async delete (
         @Param('id', ParseIntPipe) id:number
     ) {
-        return { id }
+        try {
+            return await this.providerService.findOneWithProducts(id);
+        } catch (error) {
+            throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
     }
+
+    // @Delete('/:id')
+    // async delete (
+    //     @Param('id', ParseIntPipe) id:number
+    // ) {
+    //     return { id }
+    // }
 }

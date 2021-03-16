@@ -22,62 +22,17 @@ export class CategoriesController {
         private readonly categoryService:CategoriesService
     ) {}
 
-    
-    @ApiBody({
-        type: CreateCategoryDto,
-        required: true,
-        description: `new category data`
-    })
-    @Post('/')
-    @HttpCode(HttpStatus.CREATED)
-    async create(
-        @Body() category:CreateCategoryDto
-    ){
-        return category
-
-    }
-
-    @ApiBody({
-        type: CreateCategoryDto,
-        required: true,
-        description: `updated category data`
-    })
-    @Put('/:id')
-    @HttpCode(HttpStatus.OK)
-    async update (
-        @Param('id', ParseIntPipe) id:number,
-        @Body() category: CreateCategoryDto
-    ) {
-        return {
-            id,
-            ...category
-        }
-    }
-
     @Get('/:id/products')
     @HttpCode(HttpStatus.OK)
     async getOne (
         @Param('id', ParseIntPipe) id:number
     ) {
         try {
-            return await this.categoryService.findOne(id)
+            return await this.categoryService.findOneWithProducts(id)
         } catch (error) {
             throw new HttpException(`${error.toString()}`, 
             HttpStatus.INTERNAL_SERVER_ERROR)            
         }
-    }
-
-    @Get('/')
-    async getAll () {
-        return []
-    }
-
-    @Delete('/:id')
-    @HttpCode(HttpStatus.OK)
-    async delete(
-        @Param('id', ParseIntPipe) id:number
-    ){
-        return id
     }
 
 

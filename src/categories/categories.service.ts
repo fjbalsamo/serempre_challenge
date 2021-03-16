@@ -20,7 +20,7 @@ export class CategoriesService {
      * return one category and your products
      * @param {number} categoryID 
      */
-    async findOne (categoryID:number) {
+    async findOneWithProducts (categoryID:number) {
         return this.categoryRepo.findOne(categoryID, {
             relations: ['products']
         })
